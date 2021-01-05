@@ -22,26 +22,27 @@ public class DomParser {
 
 		DocumentBuilderFactory dbldrFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = dbldrFactory.newDocumentBuilder();
+		
 		URLConnection urlConnection = new URL(url).openConnection();		
 	    urlConnection.addRequestProperty("Accept", "application/xml");
 		Document docmt = docBuilder.parse(urlConnection.getInputStream());
+		
 		docmt.getDocumentElement().normalize();
-		System.out.println("Nombre del archivo:" + docmt.getDocumentElement().getNodeName());
+		//System.out.println("Name of the Root element:" + docmt.getDocumentElement().getNodeName());
 
-		NodeList ndList = docmt.getElementsByTagName("country");
-
-		for (int tempval = 0; tempval < ndList.getLength(); tempval++) {
-			Node nd = ndList.item(tempval);
-			if (nd.getNodeType() == Node.ELEMENT_NODE) {
-				String nmale = "0", nfemale = "0";
-				Element elemnt = (Element) nd;
-				System.out.println("País: " + elemnt.getAttribute("name"));
-				nmale = elemnt.getElementsByTagName("pobmale").item(0).getTextContent();
-				System.out.println("Población masculina: " + nmale);
-				nfemale = elemnt.getElementsByTagName("pobfemale").item(0).getTextContent();
-				System.out.println("Población femenina: : " + nfemale);
-				System.out.println("Población total: : " + (toInt(nmale) + toInt(nfemale)) + "\n");
-			}
+		NodeList ndList = docmt.getElementsByTagName("item");
+      
+	   for (int tempval = 0; tempval < ndList.getLength(); tempval++) {
+	       Node nd = ndList.item(tempval);
+	       System.out.println("\n Name of the current element :" + nd.getNodeName());
+	       if (nd.getNodeType() == Node.ELEMENT_NODE) {
+	           Element elemnt = (Element) nd;
+	           //System.out.println("Id : " + elemnt.getAttribute("empid"));
+	           System.out.println("Id: " + elemnt.getElementsByTagName("id").item(0).getTextContent());
+	           System.out.println("Firstname: " + elemnt.getElementsByTagName("firstName").item(0).getTextContent());
+	           System.out.println("Lastname: " + elemnt.getElementsByTagName("lastName").item(0).getTextContent());
+			   System.out.println("email: " + elemnt.getElementsByTagName("emailId").item(0).getTextContent());
+		   }
 		}
 	}
 
